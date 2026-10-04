@@ -3,6 +3,7 @@ const bc = new BroadcastChannel('menu_orders');
 let menuData = {};
 let currentRest = 'napoli-forno';
 let currentLang = 'fr';
+let currentCategory = null;
 let cart = [];
 let myOrderId = null;
 
@@ -33,6 +34,7 @@ async function init() {
     restSelect.value = currentRest;
     restSelect.addEventListener('change', (e) => {
       currentRest = e.target.value;
+      currentCategory = null;
       renderMenu();
     });
   }
@@ -87,6 +89,10 @@ function renderMenu() {
   const rest = menuData.restaurants[currentRest];
   if (!rest) return;
 
+  if (!currentCategory && rest.categories && rest.categories.length > 0) {
+    currentCategory = rest.categories[0];
+  }
+
   document.body.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
 
   // Apply theme variables
@@ -118,18 +124,19 @@ function renderMenu() {
     specialContainer.innerHTML = `
       <h2 class="special-title">${specialLabels[currentLang]}</h2>
       <div class="special-card reveal-scroll">
-        <img src="${sImgSrc}" srcset="${sImgSrcset}" sizes="(max-width: 600px) 100vw, 1200px" alt="${specialItem.name[currentLang]}">
-        <div class="special-info">
+        <img src="${sImgSrc}" srcset="${sImgSrcset}" sizes="(max-width: 600px) 100vw, 1200px" alt="${specialItem.name[currentLang]}" style="cursor:pointer;" onclick="openDish('${specialItem.id}', event)">
+        <div class="special-info" style="cursor:pointer;" onclick="openDish('${specialItem.id}', event)">
           <h3>${specialItem.name[currentLang]}</h3>
           <p>${specialItem.description[currentLang]}</p>
           <strong>${formatPrice(specialItem.price)}</strong>
         </div>
-        <button class="add-btn special-add" aria-label="Add ${specialItem.name[currentLang]}" onclick="addToCart('${specialItem.id}', ${specialItem.price})">+</button>
+        <button class="add-btn special-add" aria-label="Add ${specialItem.name[currentLang]}" onclick="addToCart('${specialItem.id}', ${specialItem.price}, ${JSON.stringify(specialItem.name).replace(/"/g, '&quot;')})">+</button>
       </div>
     `;
   }
 
   rest.items.forEach(item => {
+    if (currentCategory && item.categoryId !== currentCategory) return;
     if (item.id === rest.specialId) return; // Don't show special twice
     
     const el = document.createElement('div');
@@ -139,13 +146,13 @@ function renderMenu() {
     const imgSrc = `assets/img/${item.image800}`;
     
     el.innerHTML = `
-      <img src="${imgSrc}" srcset="${imgSrcset}" sizes="(max-width: 600px) 800px, 1600px" alt="${item.name[currentLang]}">
-      <div class="menu-item-info" style="cursor:pointer;" onclick="openDish('${item.id}')">
+      <img src="${imgSrc}" srcset="${imgSrcset}" sizes="(max-width: 600px) 800px, 1600px" alt="${item.name[currentLang]}" style="cursor:pointer;" onclick="openDish('${item.id}', event)">
+      <div class="menu-item-info" style="cursor:pointer;" onclick="openDish('${item.id}', event)">
         <h3>${item.name[currentLang]}</h3>
         <p>${item.description[currentLang]}</p>
         <strong>${formatPrice(item.price)}</strong>
       </div>
-      <button class="add-btn" aria-label="Add ${item.name[currentLang]}" onclick="addToCart('${item.id}', ${item.price})">+</button>
+      <button class="add-btn" aria-label="Add ${item.name[currentLang]}" onclick="addToCart('${item.id}', ${item.price}, ${JSON.stringify(item.name).replace(/"/g, '&quot;')})">+</button>
     `;
     container.appendChild(el);
   });
@@ -153,8 +160,8 @@ function renderMenu() {
   updateCartUI();
 }
 
-window.addToCart = function(id, price) {
-  cart.push({ id, price });
+window.addToCart = function(id, price, nameObj) {
+  cart.push({ id, price, name: nameObj });
   updateCartUI();
 };
 
@@ -166,6 +173,12 @@ function updateCartUI() {
     const total = cart.reduce((acc, item) => acc + item.price, 0);
     const totalLabel = currentLang === 'ar' ? 'المجموع' : (currentLang === 'en' ? 'Total' : 'Total');
     document.getElementById('cart-total-text').textContent = `${totalLabel}: ${formatPrice(total)}`;
+    
+    const badge = document.getElementById('cart-badge');
+    if (badge) {
+      badge.textContent = cart.length;
+      gsap.fromTo(badge, { scale: 1.5 }, { scale: 1, duration: 0.3, ease: "back.out(2)" });
+    }
   } else {
     cartBar.classList.add('hidden');
   }
@@ -194,9 +207,21 @@ function placeOrder() {
   cart = [];
   updateCartUI();
   
-  document.getElementById('order-tracking')?.classList.remove('hidden');
+  const trackModal = document.getElementById('order-tracking');
+  if (trackModal) {
+    trackModal.classList.remove('hidden');
+    gsap.fromTo('.tracking-content', { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.5)' });
+    
+    // Animate checkmark
+    gsap.fromTo('.success-check-circle', { strokeDasharray: 166, strokeDashoffset: 166 }, { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' });
+    gsap.fromTo('.success-check-path', { strokeDasharray: 48, strokeDashoffset: 48 }, { strokeDashoffset: 0, duration: 0.4, delay: 0.6, ease: 'power2.out' });
+  }
   updateTracking(1);
 }
+
+document.getElementById('close-tracking-btn')?.addEventListener('click', () => {
+  closeModal('order-tracking');
+});
 
 function updateTracking(statusLevel) {
   for (let i = 1; i <= 4; i++) {
@@ -212,25 +237,69 @@ function updateTracking(statusLevel) {
 }
 
 // -- Dish Modal Logic --
-window.openDish = function(id) {
+window.openDish = function(id, event) {
   const rest = menuData.restaurants[currentRest];
   const item = rest.items.find(i => i.id === id) || (rest.specialId === id ? rest.items.find(i => i.id === id) : null);
   if (!item) return;
   
   document.getElementById('dish-modal-title').textContent = item.name[currentLang];
   document.getElementById('dish-modal-desc').textContent = item.description[currentLang];
-  document.getElementById('dish-modal-price').textContent = formatPrice(item.price);
+  
+  // Ingredients (mock logic since no explicit ingredients in JSON, we just use description or empty)
+  document.getElementById('dish-modal-ing').textContent = item.description[currentLang];
+  
+  let currentPrice = item.price;
+  const priceEl = document.getElementById('dish-modal-price');
+  priceEl.textContent = formatPrice(currentPrice);
   document.getElementById('dish-modal-img').src = `assets/img/${item.image800}`;
   
+  // Reset options
+  const sizeRadios = document.querySelectorAll('input[name="dish-size"]');
+  sizeRadios.forEach(r => {
+    r.checked = (r.value === 'standard');
+    r.onchange = updateModalPrice;
+  });
+  
+  const extras = document.querySelectorAll('.dish-extra');
+  extras.forEach(cb => {
+    cb.checked = false;
+    cb.onchange = updateModalPrice;
+  });
+  
+  function updateModalPrice() {
+    let p = item.price;
+    const size = document.querySelector('input[name="dish-size"]:checked');
+    if (size && size.value === 'large') p += 200;
+    
+    document.querySelectorAll('.dish-extra:checked').forEach(cb => {
+      if (cb.value === 'fromage') p += 100;
+      if (cb.value === 'sauce') p += 50;
+    });
+    
+    currentPrice = p;
+    priceEl.textContent = formatPrice(currentPrice);
+  }
+  
   const addBtn = document.getElementById('dish-modal-add');
+  // clear previous onclick
   addBtn.onclick = () => {
-    addToCart(item.id, item.price);
+    addToCart(item.id, currentPrice, item.name);
     closeModal('dish-modal');
   };
   
   const modal = document.getElementById('dish-modal');
   modal.classList.remove('hidden');
-  gsap.fromTo('.dish-modal-content', { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' });
+  
+  let originX = '50%';
+  let originY = '50%';
+  if (event && event.currentTarget) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    originX = rect.left + rect.width / 2 + 'px';
+    originY = rect.top + rect.height / 2 + 'px';
+  }
+  
+  gsap.set('.dish-modal-content', { transformOrigin: `${originX} ${originY}` });
+  gsap.fromTo('.dish-modal-content', { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'power3.out' });
 };
 
 document.getElementById('close-dish-btn').addEventListener('click', () => closeModal('dish-modal'));
@@ -241,6 +310,15 @@ function closeModal(id) {
     modal.classList.add('hidden');
   }});
 }
+
+// Close on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal:not(.hidden)').forEach(modal => {
+      closeModal(modal.id);
+    });
+  }
+});
 
 // -- Checkout Logic --
 document.getElementById('checkout-btn')?.addEventListener('click', () => {
@@ -369,6 +447,8 @@ function initAnimations() {
         a.textContent = cat;
         a.addEventListener('click', (e) => {
           e.preventDefault();
+          currentCategory = cat;
+          renderMenu();
           closeMenu();
         });
         nav.appendChild(a);

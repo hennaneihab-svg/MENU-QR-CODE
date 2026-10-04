@@ -87,13 +87,28 @@
           <div class="dish-modal-meta">
             <span class="ingredients"><strong>Ingrédients:</strong> <span id="dish-modal-ing"></span></span>
           </div>
+          <div class="dish-options">
+            <div class="option-group">
+              <h4>Taille</h4>
+              <label><input type="radio" name="dish-size" value="standard" checked> Standard</label>
+              <label><input type="radio" name="dish-size" value="large"> Large (+200 DA)</label>
+            </div>
+            <div class="option-group">
+              <h4>Extras</h4>
+              <label><input type="checkbox" class="dish-extra" value="fromage"> Supplément Fromage (+100 DA)</label>
+              <label><input type="checkbox" class="dish-extra" value="sauce"> Sauce Maison (+50 DA)</label>
+            </div>
+          </div>
           <strong id="dish-modal-price" class="price-tag"></strong>
           <button id="dish-modal-add" class="btn-primary">Ajouter au panier</button>
         </div>
       </div>
     </div>
     <div id="cart-bar" class="hidden">
-      <span id="cart-total-text">Total: 0 DA</span>
+      <div class="cart-info">
+        <span id="cart-badge" class="badge">0</span>
+        <span id="cart-total-text">Total: 0 DA</span>
+      </div>
       <button id="checkout-btn">Commander</button>
     </div>
     <!-- Checkout Modal -->
@@ -111,14 +126,19 @@
     </div>
 
     <div id="order-tracking" class="modal hidden">
-      <div class="modal-content">
-        <h2 id="tracking-title">Commande</h2>
+      <div class="modal-content tracking-content">
+        <svg class="success-check" viewBox="0 0 52 52">
+          <circle class="success-check-circle" cx="26" cy="26" r="25" fill="none"/>
+          <path class="success-check-path" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+        </svg>
+        <h2 id="tracking-title">Commande Confirmée</h2>
         <div class="tracking-steps">
-          <div class="step" id="step-1">1. Recue</div>
-          <div class="step" id="step-2">2. En preparation</div>
-          <div class="step" id="step-3">3. Prete</div>
+          <div class="step" id="step-1">1. Reçue</div>
+          <div class="step" id="step-2">2. En préparation</div>
+          <div class="step" id="step-3">3. Prête</div>
           <div class="step" id="step-4">4. Servie</div>
         </div>
+        <button id="close-tracking-btn" class="btn-secondary" style="margin-top:20px; width:100%;">Fermer</button>
       </div>
     </div>
   </div>
@@ -140,6 +160,8 @@
       </div>
     </div>
   </footer>
+
+  <div id="demo-cursor" style="position:fixed; top:50%; left:50%; width:30px; height:30px; background:url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"32\" height=\"32\" viewBox=\"0 0 32 32\"><path fill=\"white\" stroke=\"black\" stroke-width=\"1.5\" d=\"M4.5,4.5 L24,11 L13,15 L17,26 L12.5,28 L8.5,17 L3,21 Z\"/></svg>') no-repeat; z-index:9999; pointer-events:none; opacity:0; transition: opacity 0.3s;"></div>
 
   <script src="data/menus.js"></script>
   <script src="js/main.js"></script>
