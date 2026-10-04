@@ -433,6 +433,14 @@ document.getElementById('start-demo-btn')?.addEventListener('click', async () =>
       catLinks[0].click();
       await wait(1500);
     }
+  } else {
+    const catBtns = document.querySelectorAll('#category-nav button');
+    if (catBtns.length > 1) {
+      await moveCursor(catBtns[1]);
+      if (cancelDemo) return;
+      catBtns[1].click();
+      await wait(1500);
+    }
   }
 
   if (cancelDemo) return;
@@ -572,47 +580,53 @@ function initAnimations() {
     );
   });
 
-  // Fullscreen Menu Toggle
+  // Fullscreen Menu Toggle (if present)
   const menuBtn = document.getElementById('menu-toggle-btn');
   const closeBtn = document.getElementById('close-menu-btn');
   const overlay = document.getElementById('fullscreen-menu');
   const overlayBg = document.querySelector('.overlay-bg');
   
-  menuBtn.addEventListener('click', () => {
-    overlay.classList.remove('hidden');
-    gsap.to(overlayBg, { opacity: 1, duration: 0.3 });
-    
-    // Inject categories dynamically from menuData
-    const nav = document.getElementById('category-nav');
-    nav.innerHTML = '';
-    const rest = menuData.restaurants[currentRest];
-    if (rest && rest.categories) {
-      rest.categories.forEach(cat => {
-        const a = document.createElement('a');
-        a.href = '#';
-        a.className = 'cat-link';
-        a.textContent = cat;
-        a.addEventListener('click', (e) => {
-          e.preventDefault();
-          currentCategory = cat;
-          renderMenu();
-          closeMenu();
-        });
-        nav.appendChild(a);
-      });
+  if (menuBtn && overlay) {
+    menuBtn.addEventListener('click', () => {
+      overlay.classList.remove('hidden');
+      if (overlayBg) gsap.to(overlayBg, { opacity: 1, duration: 0.3 });
+      
+      const nav = document.getElementById('category-nav');
+      if (nav) {
+        nav.innerHTML = '';
+        const rest = menuData.restaurants[currentRest];
+        if (rest && rest.categories) {
+          rest.categories.forEach(cat => {
+            const a = document.createElement('a');
+            a.href = '#';
+            a.className = 'cat-link';
+            a.textContent = cat;
+            a.addEventListener('click', (e) => {
+              e.preventDefault();
+              currentCategory = cat;
+              renderMenu();
+              closeMenu();
+            });
+            nav.appendChild(a);
+          });
+        }
+      }
+      gsap.to('.cat-link', { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power3.out', delay: 0.1 });
+    });
+
+    function closeMenu() {
+      gsap.to('.cat-link', { y: 20, opacity: 0, duration: 0.3, stagger: 0.05, ease: 'power2.in' });
+      if (overlayBg) {
+        gsap.to(overlayBg, { opacity: 0, duration: 0.4, delay: 0.2, onComplete: () => {
+          overlay.classList.add('hidden');
+        }});
+      } else {
+        overlay.classList.add('hidden');
+      }
     }
     
-    gsap.to('.cat-link', { y: 0, opacity: 1, duration: 0.5, stagger: 0.1, ease: 'power3.out', delay: 0.1 });
-  });
-
-  function closeMenu() {
-    gsap.to('.cat-link', { y: 20, opacity: 0, duration: 0.3, stagger: 0.05, ease: 'power2.in' });
-    gsap.to(overlayBg, { opacity: 0, duration: 0.4, delay: 0.2, onComplete: () => {
-      overlay.classList.add('hidden');
-    }});
+    closeBtn?.addEventListener('click', closeMenu);
   }
-  
-  closeBtn.addEventListener('click', closeMenu);
 }
 
 // Ensure GSAP is initialized after load

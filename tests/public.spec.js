@@ -26,21 +26,17 @@ testCases.forEach(({ name, url, viewport }) => {
       await page.waitForSelector('.menu-item', { timeout: 10000 });
       await page.waitForTimeout(1000);
       
-      const menuToggle = page.locator('#menu-toggle-btn');
-      await menuToggle.click({ force: true });
-      
       // Get categories
-      const catLinks = page.locator('.cat-link');
-      expect(await catLinks.count()).toBeGreaterThan(1);
+      const catBtns = page.locator('#category-nav button, .cat-link');
+      expect(await catBtns.count()).toBeGreaterThan(1);
       
       // Click first cat
-      await catLinks.nth(0).click({ force: true });
-      await page.waitForTimeout(500); // animation
+      await catBtns.nth(0).click({ force: true });
+      await page.waitForTimeout(500);
       const itemsCat1 = await page.locator('.menu-item h3').allTextContents();
       
       // Click second cat
-      await menuToggle.click({ force: true });
-      await catLinks.nth(1).click({ force: true });
+      await catBtns.nth(1).click({ force: true });
       await page.waitForTimeout(500);
       const itemsCat2 = await page.locator('.menu-item h3').allTextContents();
       
@@ -100,6 +96,11 @@ testCases.forEach(({ name, url, viewport }) => {
       await page.waitForSelector('#checkout-modal', { state: 'visible' });
       await page.waitForTimeout(500);
       await page.evaluate(() => document.getElementById('confirm-order-btn').click());
+      
+      const receiptBtn = page.locator('#close-receipt-btn');
+      if (await receiptBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await receiptBtn.click({ force: true });
+      }
       
       // Tracking
       await page.waitForSelector('#order-tracking', { state: 'visible' });
