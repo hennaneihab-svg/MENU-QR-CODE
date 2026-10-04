@@ -16,11 +16,11 @@
   
   <div id="entry-screen">
     <div class="entry-content">
-      <h1 class="entry-title">
-        <span class="mask-wrap"><span class="mask-text" id="entry-name">Napoli Forno</span></span>
-      </h1>
-      <div class="entry-btn-wrap">
-        <button id="enter-btn">Voir le menu</button>
+      <p class="entry-catchphrase" style="font-size:1.2rem; color:var(--text-muted); margin-bottom:10px;">Découvrez nos saveurs authentiques</p>
+      <h1 class="entry-title" id="entry-name">Napoli Forno</h1>
+      <div class="entry-actions" style="display:flex; gap:15px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
+        <button id="enter-btn" class="btn-primary" style="opacity:1; transform:none; position:relative; width:auto;">Voir la carte</button>
+        <button id="entry-demo-btn" class="btn-primary" style="background:#f39c12; width:auto; opacity:1; transform:none; position:relative;">Lancer la démo</button>
       </div>
     </div>
   </div>
@@ -48,9 +48,7 @@
     </div>
   </header>
 
-  <div id="local-mode-banner">
-    ⚠️ Mode local : client et admin sur le même navigateur uniquement. (Configurez Firebase dans main.js)
-  </div>
+
 
   <div class="demo-controls hidden-initially">
     <label>Demo: Changer de restaurant</label>
