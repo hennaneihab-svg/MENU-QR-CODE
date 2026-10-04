@@ -292,11 +292,14 @@ window.openDish = function(id, event) {
   
   let originX = '50%';
   let originY = '50%';
-  if (event && event.currentTarget) {
-    const rect = event.currentTarget.getBoundingClientRect();
-    originX = rect.left + rect.width / 2 + 'px';
-    originY = rect.top + rect.height / 2 + 'px';
-  }
+  try {
+    const el = event && (event.currentTarget || event.target);
+    if (el && el.getBoundingClientRect) {
+      const rect = el.getBoundingClientRect();
+      originX = rect.left + rect.width / 2 + 'px';
+      originY = rect.top + rect.height / 2 + 'px';
+    }
+  } catch(e) {}
   
   gsap.set('.dish-modal-content', { transformOrigin: `${originX} ${originY}` });
   gsap.fromTo('.dish-modal-content', { scale: 0.2, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'power3.out' });
