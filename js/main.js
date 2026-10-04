@@ -140,7 +140,7 @@ function renderMenu() {
     
     el.innerHTML = `
       <img src="${imgSrc}" srcset="${imgSrcset}" sizes="(max-width: 600px) 800px, 1600px" alt="${item.name[currentLang]}">
-      <div class="menu-item-info">
+      <div class="menu-item-info" style="cursor:pointer;" onclick="openDish('${item.id}')">
         <h3>${item.name[currentLang]}</h3>
         <p>${item.description[currentLang]}</p>
         <strong>${formatPrice(item.price)}</strong>
@@ -175,11 +175,20 @@ function placeOrder() {
   if (cart.length === 0) return;
   myOrderId = 'ORD-' + Math.floor(Math.random() * 10000);
   
+  const type = document.querySelector('input[name="order-type"]:checked').value;
+  const table = document.getElementById('table-number').value;
+  const address = document.getElementById('delivery-address').value;
+  const total = cart.reduce((acc, item) => acc + item.price, 0);
+
   bc.postMessage({
     type: 'NEW_ORDER',
     orderId: myOrderId,
     restaurant: currentRest,
-    items: cart
+    items: cart,
+    orderType: type,
+    table: table,
+    address: address,
+    total: total
   });
 
   cart = [];
@@ -201,6 +210,91 @@ function updateTracking(statusLevel) {
     }
   }
 }
+
+// -- Dish Modal Logic --
+window.openDish = function(id) {
+  const rest = menuData.restaurants[currentRest];
+  const item = rest.items.find(i => i.id === id) || (rest.specialId === id ? rest.items.find(i => i.id === id) : null);
+  if (!item) return;
+  
+  document.getElementById('dish-modal-title').textContent = item.name[currentLang];
+  document.getElementById('dish-modal-desc').textContent = item.description[currentLang];
+  document.getElementById('dish-modal-price').textContent = formatPrice(item.price);
+  document.getElementById('dish-modal-img').src = `assets/img/${item.image800}`;
+  
+  const addBtn = document.getElementById('dish-modal-add');
+  addBtn.onclick = () => {
+    addToCart(item.id, item.price);
+    closeModal('dish-modal');
+  };
+  
+  const modal = document.getElementById('dish-modal');
+  modal.classList.remove('hidden');
+  gsap.fromTo('.dish-modal-content', { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' });
+};
+
+document.getElementById('close-dish-btn').addEventListener('click', () => closeModal('dish-modal'));
+
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  gsap.to(modal.querySelector('.modal-content'), { scale: 0.8, opacity: 0, duration: 0.2, onComplete: () => {
+    modal.classList.add('hidden');
+  }});
+}
+
+// -- Checkout Logic --
+document.getElementById('checkout-btn')?.addEventListener('click', () => {
+  const modal = document.getElementById('checkout-modal');
+  modal.classList.remove('hidden');
+  gsap.fromTo(modal.querySelector('.modal-content'), { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' });
+});
+
+document.querySelectorAll('input[name="order-type"]').forEach(radio => {
+  radio.addEventListener('change', (e) => {
+    document.getElementById('table-number').style.display = e.target.value === 'table' ? 'block' : 'none';
+    document.getElementById('delivery-address').style.display = e.target.value === 'livraison' ? 'block' : 'none';
+  });
+});
+
+document.getElementById('confirm-order-btn').addEventListener('click', () => {
+  closeModal('checkout-modal');
+  placeOrder();
+});
+
+// -- Demo Sequence --
+document.getElementById('start-demo-btn')?.addEventListener('click', async () => {
+  const legend = document.getElementById('demo-legend');
+  legend.classList.remove('hidden');
+  
+  const text = document.getElementById('demo-legend-text');
+  
+  text.textContent = 'Étape 1/5 : Navigation';
+  window.scrollTo({ top: 500, behavior: 'smooth' });
+  await new Promise(r => setTimeout(r, 2000));
+  
+  text.textContent = 'Étape 2/5 : Clic sur un plat';
+  const firstItem = document.querySelector('.menu-item-info');
+  if (firstItem) firstItem.click();
+  await new Promise(r => setTimeout(r, 2000));
+  
+  text.textContent = 'Étape 3/5 : Ajout au panier';
+  document.getElementById('dish-modal-add').click();
+  await new Promise(r => setTimeout(r, 2000));
+  
+  text.textContent = 'Étape 4/5 : Commander (Sur place)';
+  document.getElementById('checkout-btn').click();
+  await new Promise(r => setTimeout(r, 1500));
+  document.getElementById('confirm-order-btn').click();
+  await new Promise(r => setTimeout(r, 2000));
+  
+  text.textContent = 'Étape 5/5 : Suivi direct';
+  await new Promise(r => setTimeout(r, 3000));
+  
+  legend.classList.add('hidden');
+});
+document.getElementById('stop-demo-btn')?.addEventListener('click', () => {
+  document.getElementById('demo-legend').classList.add('hidden');
+});
 
 // GSAP Animations and Lenis
 function initAnimations() {

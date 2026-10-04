@@ -48,6 +48,10 @@
     </div>
   </header>
 
+  <div id="local-mode-banner">
+    ⚠️ Mode local : client et admin sur le même navigateur uniquement. (Configurez Firebase dans main.js)
+  </div>
+
   <div class="demo-controls hidden-initially">
     <label>Demo: Changer de restaurant</label>
     <select id="restaurant-select">
@@ -56,6 +60,12 @@
       <option value="dar-el-bey">Dar El Bey</option>
       <option value="sakura-bar">Sakura Bar</option>
     </select>
+    <button id="start-demo-btn">Lancer la démo</button>
+  </div>
+
+  <div id="demo-legend" class="hidden">
+    <span id="demo-legend-text">Étape 1/5 : Navigation</span>
+    <button id="stop-demo-btn">Arrêter</button>
   </div>
 
   <div id="app" class="hidden-initially">
@@ -65,10 +75,41 @@
       <div class="skeleton-item"></div>
       <div class="skeleton-item"></div>
     </div>
+    
+    <!-- Dish Fullscreen Modal -->
+    <div id="dish-modal" class="modal hidden">
+      <div class="modal-content dish-modal-content">
+        <button id="close-dish-btn" class="close-btn">&times;</button>
+        <img id="dish-modal-img" src="" alt="">
+        <div class="dish-modal-info">
+          <h2 id="dish-modal-title">Titre</h2>
+          <p id="dish-modal-desc">Description</p>
+          <div class="dish-modal-meta">
+            <span class="ingredients"><strong>Ingrédients:</strong> <span id="dish-modal-ing"></span></span>
+          </div>
+          <strong id="dish-modal-price" class="price-tag"></strong>
+          <button id="dish-modal-add" class="btn-primary">Ajouter au panier</button>
+        </div>
+      </div>
+    </div>
     <div id="cart-bar" class="hidden">
       <span id="cart-total-text">Total: 0 DA</span>
       <button id="checkout-btn">Commander</button>
     </div>
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2>Validation</h2>
+        <div class="checkout-options">
+          <label><input type="radio" name="order-type" value="table" checked> Sur place (Table)</label>
+          <input type="number" id="table-number" placeholder="N° Table" value="1">
+          <label><input type="radio" name="order-type" value="livraison"> Livraison</label>
+          <input type="text" id="delivery-address" placeholder="Adresse" style="display:none;">
+        </div>
+        <button id="confirm-order-btn" class="btn-primary">Confirmer la commande</button>
+      </div>
+    </div>
+
     <div id="order-tracking" class="modal hidden">
       <div class="modal-content">
         <h2 id="tracking-title">Commande</h2>
