@@ -229,6 +229,20 @@ body[dir="rtl"] .special-add { right: auto; left: 20px; }
 }
 
 /* Menu Grid */
+#category-nav::-webkit-scrollbar { display: none; }
+#category-nav { scrollbar-width: none; }
+#category-nav button { scroll-snap-align: start; }
+
+/* Offers Carousel */
+#offers-carousel-container { background: var(--primary); color: white; }
+.offer-slide { min-width: 100%; box-sizing: border-box; padding: 30px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.offer-title { font-size: 1.5rem; margin: 0 0 10px 0; font-family: var(--font-display); }
+.offer-desc { margin: 0 0 15px 0; opacity: 0.9; }
+.offer-price { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
+.offer-btn { background: #fff; color: var(--primary); border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; font-weight: bold; }
+.offer-indicator { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: background 0.3s; }
+.offer-indicator.active { background: white; }
+
 #menu-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

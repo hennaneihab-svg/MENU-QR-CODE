@@ -139,17 +139,61 @@ function renderMenu() {
     const sImgSrc = `assets/img/${specialItem.image800}`;
     
     specialContainer.innerHTML = `
-      <h2 class="special-title">${specialLabels[currentLang]}</h2>
+      <h2 class="special-title">${specialLabels[currentLang] || specialLabels.fr}</h2>
       <div class="special-card reveal-scroll">
-        <img src="${sImgSrc}" srcset="${sImgSrcset}" sizes="(max-width: 600px) 100vw, 1200px" alt="${specialItem.name[currentLang]}" style="cursor:pointer;" onclick="openDish('${specialItem.id}', event)">
+        <img src="${sImgSrc}" srcset="${sImgSrcset}" sizes="(max-width: 600px) 100vw, 1200px" alt="${specialItem.name.fr}" style="cursor:pointer;" onclick="openDish('${specialItem.id}', event)">
         <div class="special-info" style="cursor:pointer;" onclick="openDish('${specialItem.id}', event)">
-          <h3>${specialItem.name[currentLang]}</h3>
-          <p>${specialItem.description[currentLang]}</p>
+          <h3>${specialItem.name.fr}</h3>
+          <p>${specialItem.description ? specialItem.description.fr : ''}</p>
           <strong>${formatPrice(specialItem.price)}</strong>
         </div>
-        <button class="add-btn special-add" aria-label="Add ${specialItem.name[currentLang]}" onclick="addToCart('${specialItem.id}', ${specialItem.price}, ${JSON.stringify(specialItem.name).replace(/"/g, '&quot;')})">+</button>
+        <button class="add-btn special-add" aria-label="Add" onclick="addToCart('${specialItem.id}', ${specialItem.price}, {fr: '${specialItem.name.fr}'})">+</button>
       </div>
     `;
+  }
+
+  // Offers Carousel
+  const track = document.getElementById('offers-track');
+  const inds = document.getElementById('offers-indicators');
+  if (track && inds) {
+    track.innerHTML = ''; inds.innerHTML = '';
+    if (rest.offers && rest.offers.length > 0) {
+      document.getElementById('offers-carousel-container').style.display = 'block';
+      rest.offers.forEach((offer, idx) => {
+        const slide = document.createElement('div');
+        slide.className = 'offer-slide';
+        slide.innerHTML = `
+          <h3 class="offer-title">${offer.title}</h3>
+          <p class="offer-desc">${offer.desc}</p>
+          <div class="offer-price">${formatPrice(offer.price)}</div>
+          <button class="offer-btn" onclick="addToCart('${offer.id}', ${offer.price}, {fr: '${offer.title}'})">Ajouter au panier</button>
+        `;
+        track.appendChild(slide);
+        
+        const ind = document.createElement('div');
+        ind.className = `offer-indicator ${idx===0 ? 'active' : ''}`;
+        ind.onclick = () => goToSlide(idx);
+        inds.appendChild(ind);
+      });
+      
+      let curSlide = 0;
+      let slideInt;
+      window.goToSlide = function(idx) {
+        curSlide = idx;
+        track.style.transform = `translateX(-${idx * 100}%)`;
+        Array.from(inds.children).forEach((c, i) => c.className = `offer-indicator ${i===idx ? 'active' : ''}`);
+      };
+      function startInt() {
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          slideInt = setInterval(() => { window.goToSlide((curSlide+1)%rest.offers.length); }, 4500);
+        }
+      }
+      startInt();
+      document.getElementById('offers-carousel-container').onmouseenter = () => clearInterval(slideInt);
+      document.getElementById('offers-carousel-container').onmouseleave = startInt;
+    } else {
+      document.getElementById('offers-carousel-container').style.display = 'none';
+    }
   }
 
   rest.items.forEach(item => {

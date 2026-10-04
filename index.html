@@ -61,7 +61,11 @@
 
   <div id="app" class="hidden-initially">
     <div id="special-container"></div>
-    <nav id="category-nav" style="display:flex; gap:10px; overflow-x:auto; margin-bottom:20px; padding-bottom:10px;"></nav>
+    <div id="offers-carousel-container" style="overflow:hidden; position:relative; margin-bottom:20px; border-radius:12px;">
+      <div id="offers-track" style="display:flex; transition:transform 0.5s ease-out;"></div>
+      <div id="offers-indicators" style="position:absolute; bottom:10px; width:100%; display:flex; justify-content:center; gap:5px;"></div>
+    </div>
+    <nav id="category-nav" style="display:flex; gap:10px; overflow-x:auto; margin-bottom:20px; padding-bottom:10px; scroll-snap-type:x mandatory;"></nav>
     <div id="menu-container" class="skeleton-container">
       <div class="skeleton-item"></div>
       <div class="skeleton-item"></div>
