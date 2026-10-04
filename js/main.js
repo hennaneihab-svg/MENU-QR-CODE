@@ -340,38 +340,148 @@ document.getElementById('confirm-order-btn').addEventListener('click', () => {
 });
 
 // -- Demo Sequence --
+let cancelDemo = false;
+
+async function moveCursor(el) {
+  if (cancelDemo || !el) return;
+  const cursor = document.getElementById('demo-cursor');
+  if (cursor) {
+    cursor.style.opacity = '1';
+    const rect = el.getBoundingClientRect();
+    const targetX = rect.left + rect.width / 2;
+    const targetY = rect.top + rect.height / 2;
+    
+    return new Promise(resolve => {
+      gsap.to(cursor, { left: targetX, top: targetY, duration: 0.8, ease: "power2.inOut", onComplete: () => {
+        if (!cancelDemo) {
+          gsap.to(cursor, { scale: 0.8, duration: 0.1, yoyo: true, repeat: 1, onComplete: resolve });
+        } else {
+          resolve();
+        }
+      }});
+    });
+  }
+}
+
 document.getElementById('start-demo-btn')?.addEventListener('click', async () => {
+  cancelDemo = false;
   const legend = document.getElementById('demo-legend');
   legend.classList.remove('hidden');
   
   const text = document.getElementById('demo-legend-text');
   
-  text.textContent = 'Étape 1/5 : Navigation';
-  window.scrollTo({ top: 500, behavior: 'smooth' });
-  await new Promise(r => setTimeout(r, 2000));
+  const wait = (ms) => new Promise(r => setTimeout(r, ms));
   
-  text.textContent = 'Étape 2/5 : Clic sur un plat';
+  if (cancelDemo) return;
+  text.textContent = 'Étape 1/6 : Navigation Catégories';
+  window.scrollTo({ top: 100, behavior: 'smooth' });
+  await wait(1000);
+  
+  const menuBtn = document.getElementById('menu-toggle-btn');
+  if (menuBtn) {
+    await moveCursor(menuBtn);
+    if (cancelDemo) return;
+    menuBtn.click();
+    await wait(1500);
+    
+    const catLinks = document.querySelectorAll('.cat-link');
+    if (catLinks.length > 1) {
+      await moveCursor(catLinks[1]);
+      if (cancelDemo) return;
+      catLinks[1].click();
+      await wait(1500);
+    } else if (catLinks.length > 0) {
+      await moveCursor(catLinks[0]);
+      if (cancelDemo) return;
+      catLinks[0].click();
+      await wait(1500);
+    }
+  }
+
+  if (cancelDemo) return;
+  text.textContent = 'Étape 2/6 : Clic sur un plat';
   const firstItem = document.querySelector('.menu-item-info');
-  if (firstItem) firstItem.click();
-  await new Promise(r => setTimeout(r, 2000));
+  if (firstItem) {
+    await moveCursor(firstItem);
+    if (cancelDemo) return;
+    firstItem.click();
+    await wait(1500);
+  }
   
-  text.textContent = 'Étape 3/5 : Ajout au panier';
-  document.getElementById('dish-modal-add').click();
-  await new Promise(r => setTimeout(r, 2000));
+  if (cancelDemo) return;
+  text.textContent = 'Étape 3/6 : Ajout au panier';
+  const addBtn = document.getElementById('dish-modal-add');
+  if (addBtn) {
+    await moveCursor(addBtn);
+    if (cancelDemo) return;
+    addBtn.click();
+    await wait(1500);
+  }
+
+  if (cancelDemo) return;
+  text.textContent = 'Étape 4/6 : Ajout d\'un deuxième plat';
+  const secondItemBtn = document.querySelectorAll('.add-btn')[1]; // The quick add button
+  if (secondItemBtn) {
+    await moveCursor(secondItemBtn);
+    if (cancelDemo) return;
+    secondItemBtn.click();
+    await wait(1500);
+  }
   
-  text.textContent = 'Étape 4/5 : Commander (Sur place)';
-  document.getElementById('checkout-btn').click();
-  await new Promise(r => setTimeout(r, 1500));
-  document.getElementById('confirm-order-btn').click();
-  await new Promise(r => setTimeout(r, 2000));
+  if (cancelDemo) return;
+  text.textContent = 'Étape 5/6 : Commander (Livraison)';
+  const checkoutBtn = document.getElementById('checkout-btn');
+  if (checkoutBtn) {
+    await moveCursor(checkoutBtn);
+    if (cancelDemo) return;
+    checkoutBtn.click();
+    await wait(1500);
+  }
   
-  text.textContent = 'Étape 5/5 : Suivi direct';
-  await new Promise(r => setTimeout(r, 3000));
+  const livRadio = document.querySelector('input[value="livraison"]');
+  if (livRadio) {
+    await moveCursor(livRadio.parentElement);
+    if (cancelDemo) return;
+    livRadio.click();
+    await wait(1000);
+    document.getElementById('delivery-address').value = '12 Rue de la Paix';
+    await wait(1000);
+  }
+
+  const confirmBtn = document.getElementById('confirm-order-btn');
+  if (confirmBtn) {
+    await moveCursor(confirmBtn);
+    if (cancelDemo) return;
+    confirmBtn.click();
+    await wait(2000);
+  }
+  
+  if (cancelDemo) return;
+  text.textContent = 'Étape 6/6 : Suivi et Dashboard';
+  await wait(3000);
+  const trackClose = document.getElementById('close-tracking-btn');
+  if (trackClose) {
+    await moveCursor(trackClose);
+    if (cancelDemo) return;
+    trackClose.click();
+    await wait(1000);
+  }
+  
+  if (cancelDemo) return;
+  text.textContent = 'Ouverture du tableau de bord admin...';
+  await wait(1500);
+  window.open('admin.html', '_blank');
   
   legend.classList.add('hidden');
+  const cursor = document.getElementById('demo-cursor');
+  if (cursor) cursor.style.opacity = '0';
 });
+
 document.getElementById('stop-demo-btn')?.addEventListener('click', () => {
+  cancelDemo = true;
   document.getElementById('demo-legend').classList.add('hidden');
+  const cursor = document.getElementById('demo-cursor');
+  if (cursor) cursor.style.opacity = '0';
 });
 
 // GSAP Animations and Lenis
