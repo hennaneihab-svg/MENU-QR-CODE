@@ -1,0 +1,18 @@
+{
+  "name": "menu-qr-code",
+  "version": "1.0.0",
+  "description": "Ce projet est un prototype de démo commerciale pour un système de menu par QR code avec suivi de commande en temps réel.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "http-server": "^14.1.1",
+    "playwright": "^1.63.0"
+  }
+}

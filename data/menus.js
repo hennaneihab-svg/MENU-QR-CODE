@@ -1,0 +1,488 @@
+window.MENU_DATA = {
+  "restaurants": {
+    "napoli-forno": {
+      "id": "napoli-forno",
+      "name": "Napoli Forno",
+      "theme": {
+        "primary": "#d32f2f",
+        "secondary": "#ffc107",
+        "background": "#fff5ee",
+        "font": "'Playfair Display', serif"
+      },
+      "categories": [
+        "Pizza",
+        "Pasta",
+        "Starters",
+        "Desserts"
+      ],
+      "items": [
+        {
+          "id": "nf-1",
+          "categoryId": "Pizza",
+          "price": 800,
+          "name": {
+            "en": "Pizza Margherita",
+            "fr": "Pizza Margherita",
+            "ar": "Pizza Margherita"
+          },
+          "description": {
+            "fr": "Sauce tomate San Marzano, mozzarella di bufala fraîche, feuilles de basilic et un filet d'huile d'olive extra vierge.",
+            "en": "San Marzano tomato sauce, fresh buffalo mozzarella, basil leaves, and a drizzle of extra virgin olive oil.",
+            "ar": "صلصة طماطم سان مارزانو، جبنة موزاريلا دي بوفالا الطازجة، أوراق الريحان، ورشة من زيت الزيتون البكر."
+          },
+          "image800": "nf-1-800.jpg",
+          "image1600": "nf-1-1600.jpg"
+        },
+        {
+          "id": "nf-2",
+          "categoryId": "Pizza",
+          "price": 1200,
+          "name": {
+            "en": "Rustic Pizza",
+            "fr": "Rustic Pizza",
+            "ar": "Rustic Pizza"
+          },
+          "description": {
+            "fr": "Pâte artisanale cuite au feu de bois, garnie de fromages affinés, tomates cerises et herbes sauvages.",
+            "en": "Wood-fired artisanal crust topped with aged cheeses, cherry tomatoes, and wild herbs.",
+            "ar": "عجينة تقليدية مخبوزة على الحطب، مغطاة بأجبان معتقة، طماطم كرزية وأعشاب برية."
+          },
+          "image800": "nf-2-800.jpg",
+          "image1600": "nf-2-1600.jpg"
+        },
+        {
+          "id": "nf-3",
+          "categoryId": "Pasta",
+          "price": 1400,
+          "name": {
+            "en": "Pasta Bolognese",
+            "fr": "Pâtes Bolognaise",
+            "ar": "مكرونة بولونيز"
+          },
+          "description": {
+            "fr": "Pâtes fraîches accompagnées d'un riche ragoût de bœuf mijoté lentement à la tomate et aux petits légumes.",
+            "en": "Fresh pasta served with a rich slow-cooked beef ragout in tomato sauce with finely diced vegetables.",
+            "ar": "مكرونة طازجة تقدم مع يخنة لحم بقري غنية مطبوخة ببطء بصلصة الطماطم والخضار."
+          },
+          "image800": "nf-3-800.jpg",
+          "image1600": "nf-3-1600.jpg"
+        },
+        {
+          "id": "nf-4",
+          "categoryId": "Pizza",
+          "price": 1300,
+          "name": {
+            "en": "Pepperoni Pizza",
+            "fr": "Pepperoni Pizza",
+            "ar": "Pepperoni Pizza"
+          },
+          "description": {
+            "fr": "Une base généreuse en mozzarella, recouverte de tranches de pepperoni épicé et croustillant.",
+            "en": "A generous mozzarella base topped with crispy, spicy pepperoni slices.",
+            "ar": "قاعدة غنية بجبن الموزاريلا ومغطاة بشرائح البيروني الحارة والمقرمشة."
+          },
+          "image800": "nf-4-800.jpg",
+          "image1600": "nf-4-1600.jpg"
+        },
+        {
+          "id": "nf-5",
+          "categoryId": "Desserts",
+          "price": 600,
+          "name": {
+            "en": "Raspberry Cake",
+            "fr": "Raspberry Cake",
+            "ar": "Raspberry Cake"
+          },
+          "description": {
+            "fr": "Génoise légère superposée de crème onctueuse et couronnée de framboises fraîches acidulées.",
+            "en": "Light sponge cake layered with smooth cream and crowned with fresh, tart raspberries.",
+            "ar": "كعكة إسفنجية خفيفة بطبقات من الكريمة الناعمة ومزينة بتوت العليق الطازج والمنعش."
+          },
+          "image800": "nf-5-800.jpg",
+          "image1600": "nf-5-1600.jpg"
+        },
+        {
+          "id": "nf-6",
+          "categoryId": "Starters",
+          "price": 700,
+          "name": {
+            "en": "Walnut Cheese Salad",
+            "fr": "Walnut Cheese Salad",
+            "ar": "Walnut Cheese Salad"
+          },
+          "description": {
+            "fr": "Jeunes pousses croquantes, cerneaux de noix torréfiés, copeaux de fromage affiné et vinaigrette balsamique.",
+            "en": "Crisp mixed greens, toasted walnuts, shaved aged cheese, and balsamic vinaigrette.",
+            "ar": "خضار طازجة ومقرمشة، جوز محمص، شرائح الجبن المعتق وتتبيلة الخل البلسمي."
+          },
+          "image800": "nf-6-800.jpg",
+          "image1600": "nf-6-1600.jpg"
+        }
+      ],
+      "specialId": "nf-2"
+    },
+    "urban-grill": {
+      "id": "urban-grill",
+      "name": "Urban Grill",
+      "theme": {
+        "primary": "#212121",
+        "secondary": "#ff5722",
+        "background": "#f5f5f5",
+        "font": "'Roboto', sans-serif"
+      },
+      "categories": [
+        "Burgers",
+        "Steaks",
+        "Sides",
+        "Drinks"
+      ],
+      "items": [
+        {
+          "id": "ug-1",
+          "categoryId": "Burgers",
+          "price": 800,
+          "name": {
+            "en": "Classic Burger",
+            "fr": "Classic Burger",
+            "ar": "Classic Burger"
+          },
+          "description": {
+            "fr": "Double steak haché de bœuf juteux, cheddar fondu, laitue croquante, oignons frais et sauce maison.",
+            "en": "Juicy double beef patty, melted cheddar, crisp lettuce, fresh onions, and house sauce.",
+            "ar": "شريحة لحم بقري مزدوجة وعصارية، شيدر ذائب، خس مقرمش، بصل طازج وصلصة منزلية."
+          },
+          "image800": "ug-1-800.jpg",
+          "image1600": "ug-1-1600.jpg"
+        },
+        {
+          "id": "ug-2",
+          "categoryId": "Burgers",
+          "price": 1200,
+          "name": {
+            "en": "Smash Burger",
+            "fr": "Smash Burger",
+            "ar": "Smash Burger"
+          },
+          "description": {
+            "fr": "Steak écrasé à la plancha pour une croûte caramélisée, double fromage fondant et pain brioché moelleux.",
+            "en": "Smashed beef patty with a caramelized crust, double melted cheese on a soft brioche bun.",
+            "ar": "شريحة لحم مضغوطة ومقرمشة، جبن مزدوج ذائب وخبز بريوش طري."
+          },
+          "image800": "ug-2-800.jpg",
+          "image1600": "ug-2-1600.jpg"
+        },
+        {
+          "id": "ug-3",
+          "categoryId": "Burgers",
+          "price": 1400,
+          "name": {
+            "en": "Wooden Board Burger",
+            "fr": "Wooden Board Burger",
+            "ar": "Wooden Board Burger"
+          },
+          "description": {
+            "fr": "Burger gourmet servi sur planche, avec bacon croustillant, tomates mûres et sauce barbecue fumée.",
+            "en": "Gourmet burger served on a wooden board, with crispy bacon, ripe tomatoes, and smoky BBQ sauce.",
+            "ar": "برجر فاخر يقدم على لوح خشبي، مع لحم مقدد مقرمش، طماطم ناضجة وصلصة باربيكيو مدخنة."
+          },
+          "image800": "ug-3-800.jpg",
+          "image1600": "ug-3-1600.jpg"
+        },
+        {
+          "id": "ug-4",
+          "categoryId": "Sides",
+          "price": 300,
+          "name": {
+            "en": "French Fries",
+            "fr": "French Fries",
+            "ar": "French Fries"
+          },
+          "description": {
+            "fr": "Frites coupées au couteau, dorées et croustillantes, saupoudrées de sel marin et d'herbes fines.",
+            "en": "Hand-cut french fries, golden and crispy, sprinkled with sea salt and fine herbs.",
+            "ar": "بطاطس مقلية مقطعة يدوياً، ذهبية ومقرمشة، مرشوشة بملح البحر والأعشاب الدقيقة."
+          },
+          "image800": "ug-4-800.jpg",
+          "image1600": "ug-4-1600.jpg"
+        },
+        {
+          "id": "ug-5",
+          "categoryId": "Steaks",
+          "price": 1500,
+          "name": {
+            "en": "Grilled Meat & Veggies",
+            "fr": "Grilled Meat & Veggies",
+            "ar": "Grilled Meat & Veggies"
+          },
+          "description": {
+            "fr": "Brochettes de viandes marinées cuites à la flamme, accompagnées de légumes grillés tendres et parfumés.",
+            "en": "Flame-grilled marinated meat skewers served with tender, fragrant roasted vegetables.",
+            "ar": "أسياخ لحم متبلة ومشوية على اللهب، تقدم مع خضار مشوية طرية وعطرة."
+          },
+          "image800": "ug-5-800.jpg",
+          "image1600": "ug-5-1600.jpg"
+        },
+        {
+          "id": "ug-6",
+          "categoryId": "Drinks",
+          "price": 150,
+          "name": {
+            "en": "Coca-Cola",
+            "fr": "Coca-Cola",
+            "ar": "كوكا كولا"
+          },
+          "description": {
+            "fr": "La boisson gazeuse classique, servie très fraîche avec des glaçons pour une pause désaltérante.",
+            "en": "The classic carbonated beverage, served ice-cold for a refreshing break.",
+            "ar": "المشروب الغازي الكلاسيكي، يقدم مثلجاً ومنعشاً."
+          },
+          "image800": "ug-6-800.jpg",
+          "image1600": "ug-6-1600.jpg"
+        }
+      ],
+      "specialId": "ug-5"
+    },
+    "dar-el-bey": {
+      "id": "dar-el-bey",
+      "name": "Dar El Bey",
+      "theme": {
+        "primary": "#00796b",
+        "secondary": "#cddc39",
+        "background": "#fafafa",
+        "font": "'Amiri', serif"
+      },
+      "categories": [
+        "Main",
+        "Starters",
+        "Sweets"
+      ],
+      "items": [
+        {
+          "id": "deb-1",
+          "categoryId": "Main",
+          "price": 1500,
+          "name": {
+            "en": "Chicken Curry",
+            "fr": "Curry de Poulet",
+            "ar": "كاري الدجاج"
+          },
+          "description": {
+            "fr": "Morceaux de poulet tendres mijotés dans une sauce curry riche en épices indiennes, servis avec du riz basmati.",
+            "en": "Tender chicken pieces simmered in a rich Indian spice curry sauce, served with basmati rice.",
+            "ar": "قطع دجاج طرية مطبوخة بصلصة كاري غنية بالبهارات الهندية، تقدم مع أرز بسمتي."
+          },
+          "image800": "deb-1-800.jpg",
+          "image1600": "deb-1-1600.jpg"
+        },
+        {
+          "id": "deb-2",
+          "categoryId": "Main",
+          "price": 1600,
+          "name": {
+            "en": "Chicken Tajine",
+            "fr": "Chicken Tajine",
+            "ar": "Chicken Tajine"
+          },
+          "description": {
+            "fr": "Poulet lentement confit aux épices marocaines, accompagné de pommes de terre, carottes et olives savoureuses.",
+            "en": "Slow-cooked Moroccan chicken with spices, accompanied by potatoes, carrots, and savory olives.",
+            "ar": "دجاج مطبوخ ببطء بالبهارات المغربية، يقدم مع البطاطس، الجزر والزيتون اللذيذ."
+          },
+          "image800": "deb-2-800.jpg",
+          "image1600": "deb-2-1600.jpg"
+        },
+        {
+          "id": "deb-3",
+          "categoryId": "Starters",
+          "price": 600,
+          "name": {
+            "en": "Avocado Egg Toast",
+            "fr": "Toast Avocat Oeuf",
+            "ar": "توست الأفوكادو والبيض"
+          },
+          "description": {
+            "fr": "Tranche de pain rustique grillée, purée d'avocat crémeuse, jeunes pousses et œufs durs en tranches.",
+            "en": "Toasted rustic bread, creamy avocado mash, baby greens, and sliced hard-boiled eggs.",
+            "ar": "شريحة خبز ريفي محمص، هريس الأفوكادو الكريمي، خضار صغيرة وشرائح بيض مسلوق."
+          },
+          "image800": "deb-3-800.jpg",
+          "image1600": "deb-3-1600.jpg"
+        },
+        {
+          "id": "deb-4",
+          "categoryId": "Starters",
+          "price": 500,
+          "name": {
+            "en": "Vegetable Salad",
+            "fr": "Vegetable Salad",
+            "ar": "Vegetable Salad"
+          },
+          "description": {
+            "fr": "Mélange coloré d'avocat, tomates cerises, pois chiches et radis croquants, assaisonné d'une vinaigrette légère.",
+            "en": "Colorful mix of avocado, cherry tomatoes, chickpeas, and crunchy radishes with a light vinaigrette.",
+            "ar": "مزيج ملون من الأفوكادو، طماطم كرزية، حمص وفجل مقرمش، متبلة بصلصة خفيفة."
+          },
+          "image800": "deb-4-800.jpg",
+          "image1600": "deb-4-1600.jpg"
+        },
+        {
+          "id": "deb-5",
+          "categoryId": "Sweets",
+          "price": 700,
+          "name": {
+            "en": "Berry Pancakes",
+            "fr": "Pancakes Fruits Rouges",
+            "ar": "فطائر التوت"
+          },
+          "description": {
+            "fr": "Pancakes moelleux et dorés, généreusement garnis de fruits rouges frais et nappés de sirop.",
+            "en": "Fluffy, golden pancakes generously topped with fresh berries and drizzled with syrup.",
+            "ar": "فطائر بان كيك طرية وذهبية، مغطاة بسخاء بالتوت الطازج ومزينة بالقطر."
+          },
+          "image800": "deb-5-800.jpg",
+          "image1600": "deb-5-1600.jpg"
+        },
+        {
+          "id": "deb-6",
+          "categoryId": "Sweets",
+          "price": 700,
+          "name": {
+            "en": "Blueberry Pancakes",
+            "fr": "Blueberry Pancakes",
+            "ar": "Blueberry Pancakes"
+          },
+          "description": {
+            "fr": "Délicieux pancakes américains parsemés de myrtilles sauvages, servis fondants avec un coulis fruité.",
+            "en": "Delicious American pancakes dotted with wild blueberries, served warm with a fruity coulis.",
+            "ar": "فطائر أمريكية لذيذة مرصعة بالتوت البري، تقدم دافئة مع صلصة فواكه."
+          },
+          "image800": "deb-6-800.jpg",
+          "image1600": "deb-6-1600.jpg"
+        }
+      ],
+      "specialId": "deb-2"
+    },
+    "sakura-bar": {
+      "id": "sakura-bar",
+      "name": "Sakura Bar",
+      "theme": {
+        "primary": "#e91e63",
+        "secondary": "#3f51b5",
+        "background": "#fff0f5",
+        "font": "'Noto Sans JP', sans-serif"
+      },
+      "categories": [
+        "Sushi",
+        "Ramen",
+        "Bowls",
+        "Bento",
+        "Mains"
+      ],
+      "items": [
+        {
+          "id": "sb-1",
+          "categoryId": "Sushi",
+          "price": 2000,
+          "name": {
+            "en": "Sushi Platter",
+            "fr": "Sushi Platter",
+            "ar": "Sushi Platter"
+          },
+          "description": {
+            "fr": "Assortiment premium de makis et nigiris au saumon frais, préparés dans la plus pure tradition japonaise.",
+            "en": "Premium assortment of fresh salmon makis and nigiris, prepared in the purest Japanese tradition.",
+            "ar": "تشكيلة فاخرة من ماكي ونيجيري السلمون الطازج، محضرة على الطريقة اليابانية الأصيلة."
+          },
+          "image800": "sb-1-800.jpg",
+          "image1600": "sb-1-1600.jpg"
+        },
+        {
+          "id": "sb-2",
+          "categoryId": "Ramen",
+          "price": 1800,
+          "name": {
+            "en": "Tonkotsu Ramen",
+            "fr": "Tonkotsu Ramen",
+            "ar": "Tonkotsu Ramen"
+          },
+          "description": {
+            "fr": "Bouillon de porc onctueux mijoté 24h, nouilles fraîches, œuf mollet mariné et tranches de chashu fondantes.",
+            "en": "Creamy 24h-simmered pork broth, fresh noodles, marinated soft-boiled egg, and melting chashu slices.",
+            "ar": "مرق لحم خنزير غني مطبوخ لـ 24 ساعة، نودلز طازجة، بيض متبل وشرائح لحم طرية."
+          },
+          "image800": "sb-2-800.jpg",
+          "image1600": "sb-2-1600.jpg"
+        },
+        {
+          "id": "sb-3",
+          "categoryId": "Sushi",
+          "price": 1500,
+          "name": {
+            "en": "Maki Rolls",
+            "fr": "Maki Rolls",
+            "ar": "Maki Rolls"
+          },
+          "description": {
+            "fr": "Bateau majestueux proposant une variété de rouleaux fusion, alliant croquant, fondant et saveurs exquises.",
+            "en": "Majestic boat featuring a variety of fusion rolls, combining crunch, melt-in-mouth textures, and exquisite flavors.",
+            "ar": "قارب مهيب يقدم مجموعة متنوعة من لفائف الفيوجن، تجمع بين القرمشة، النعومة والنكهات الرائعة."
+          },
+          "image800": "sb-3-800.jpg",
+          "image1600": "sb-3-1600.jpg"
+        },
+        {
+          "id": "sb-4",
+          "categoryId": "Bento",
+          "price": 1200,
+          "name": {
+            "en": "Mushroom Rice Bowl",
+            "fr": "Bol de Riz aux Champignons",
+            "ar": "وعاء أرز بالفطر"
+          },
+          "description": {
+            "fr": "Bol rustique de riz parfumé, surmonté de champignons poêlés et d'une sauce umami réconfortante.",
+            "en": "Rustic bowl of fragrant rice, topped with pan-seared mushrooms and a comforting umami sauce.",
+            "ar": "وعاء ريفي من الأرز العطري، مغطى بالفطر المقلي وصلصة أومامي اللذيذة."
+          },
+          "image800": "sb-4-800.jpg",
+          "image1600": "sb-4-1600.jpg"
+        },
+        {
+          "id": "sb-5",
+          "categoryId": "Bowls",
+          "price": 1000,
+          "name": {
+            "en": "Tofu Veggie Bowl",
+            "fr": "Bol Végétarien au Tofu",
+            "ar": "وعاء التوفو النباتي"
+          },
+          "description": {
+            "fr": "Bol santé et vegan réunissant tofu mariné, maïs croquant, chou rouge et crudités rafraîchissantes.",
+            "en": "Healthy vegan bowl combining marinated tofu, sweet corn, red cabbage, and refreshing raw vegetables.",
+            "ar": "وعاء نباتي صحي يجمع بين التوفو المتبل، الذرة الحلوة، الملفوف الأحمر والخضار الطازجة."
+          },
+          "image800": "sb-5-800.jpg",
+          "image1600": "sb-5-1600.jpg"
+        },
+        {
+          "id": "sb-6",
+          "categoryId": "Mains",
+          "price": 2500,
+          "name": {
+            "en": "Salmon Fillet",
+            "fr": "Salmon Fillet",
+            "ar": "Salmon Fillet"
+          },
+          "description": {
+            "fr": "Pavé de saumon rôti à la perfection, croûte croustillante et cœur moelleux, servi avec sa salsa verte.",
+            "en": "Perfectly roasted salmon fillet, crispy crust and tender center, served with a green salsa.",
+            "ar": "شريحة سلمون مشوية بامتياز، قشرة مقرمشة وقلب طري، تقدم مع صلصة خضراء."
+          },
+          "image800": "sb-6-800.jpg",
+          "image1600": "sb-6-1600.jpg"
+        }
+      ],
+      "specialId": "sb-1"
+    }
+  }
+};
