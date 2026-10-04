@@ -115,6 +115,23 @@ function renderMenu() {
   
   const specialContainer = document.getElementById('special-container');
   specialContainer.innerHTML = '';
+  
+  const nav = document.getElementById('category-nav');
+  if (nav) {
+    nav.innerHTML = '';
+    if (rest.categories && rest.categories.length > 0) {
+      rest.categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.textContent = cat;
+        btn.style.cssText = `padding:8px 16px; border:none; border-radius:20px; cursor:pointer; background:${cat===currentCategory ? 'var(--primary)' : '#eee'}; color:${cat===currentCategory ? '#fff' : '#333'}; white-space:nowrap; font-family:var(--font-display); font-weight:600; font-size:1rem;`;
+        btn.onclick = () => {
+          currentCategory = cat;
+          renderMenu();
+        };
+        nav.appendChild(btn);
+      });
+    }
+  }
 
   const specialItem = rest.items.find(i => i.id === rest.specialId);
   if (specialItem) {
@@ -188,35 +205,52 @@ function placeOrder() {
   if (cart.length === 0) return;
   myOrderId = 'ORD-' + Math.floor(Math.random() * 10000);
   
-  const type = document.querySelector('input[name="order-type"]:checked').value;
-  const table = document.getElementById('table-number').value;
-  const address = document.getElementById('delivery-address').value;
+  const typeRadio = document.querySelector('input[name="order-type"]:checked');
+  const type = typeRadio ? typeRadio.value : 'table';
+  const table = document.getElementById('table-number').value || '1';
+  const address = document.getElementById('delivery-address').value || '';
   const total = cart.reduce((acc, item) => acc + item.price, 0);
 
-  bc.postMessage({
+  const orderData = {
     type: 'NEW_ORDER',
     orderId: myOrderId,
     restaurant: currentRest,
-    items: cart,
+    items: [...cart],
     orderType: type,
     table: table,
     address: address,
-    total: total
-  });
+    total: total,
+    time: new Date().toLocaleTimeString()
+  };
+  bc.postMessage(orderData);
+
+  // Show receipt
+  const rModal = document.getElementById('receipt-modal');
+  document.getElementById('receipt-id').textContent = myOrderId;
+  document.getElementById('receipt-mode').textContent = type === 'table' ? `Sur place (Table ${table})` : `Livraison: ${address}`;
+  document.getElementById('receipt-total').textContent = formatPrice(total);
+  document.getElementById('receipt-items').innerHTML = cart.map(i => `<div>1x ${i.name[currentLang] || i.name.fr || i.name.en || 'Plat'} - ${formatPrice(i.price)}</div>`).join('');
+  
+  rModal.classList.remove('hidden');
+  gsap.fromTo(rModal.querySelector('.modal-content'), { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(1.7)' });
+
+  document.getElementById('close-receipt-btn').onclick = () => {
+    closeModal('receipt-modal');
+    const trackModal = document.getElementById('order-tracking');
+    if (trackModal) {
+      trackModal.classList.remove('hidden');
+      gsap.fromTo('.tracking-content', { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.5)' });
+      
+      // Animate checkmark
+      gsap.fromTo('.success-check-circle', { strokeDasharray: 166, strokeDashoffset: 166 }, { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' });
+      gsap.fromTo('.success-check-path', { strokeDasharray: 48, strokeDashoffset: 48 }, { strokeDashoffset: 0, duration: 0.4, delay: 0.6, ease: 'power2.out' });
+      
+      updateTracking(1);
+    }
+  };
 
   cart = [];
   updateCartUI();
-  
-  const trackModal = document.getElementById('order-tracking');
-  if (trackModal) {
-    trackModal.classList.remove('hidden');
-    gsap.fromTo('.tracking-content', { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.5)' });
-    
-    // Animate checkmark
-    gsap.fromTo('.success-check-circle', { strokeDasharray: 166, strokeDashoffset: 166 }, { strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' });
-    gsap.fromTo('.success-check-path', { strokeDasharray: 48, strokeDashoffset: 48 }, { strokeDashoffset: 0, duration: 0.4, delay: 0.6, ease: 'power2.out' });
-  }
-  updateTracking(1);
 }
 
 document.getElementById('close-tracking-btn')?.addEventListener('click', () => {

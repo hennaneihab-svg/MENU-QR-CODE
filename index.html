@@ -25,13 +25,7 @@
     </div>
   </div>
 
-  <div id="fullscreen-menu" class="hidden">
-    <div class="overlay-bg"></div>
-    <div class="overlay-content">
-      <button id="close-menu-btn">Fermer</button>
-      <nav id="category-nav"></nav>
-    </div>
-  </div>
+
 
   <header id="main-header" class="hidden-initially">
     <div class="header-inner">
@@ -43,7 +37,6 @@
           <button data-lang="en">EN</button>
           <button data-lang="ar">AR</button>
         </nav>
-        <button id="menu-toggle-btn">Menu</button>
       </div>
     </div>
   </header>
@@ -68,6 +61,7 @@
 
   <div id="app" class="hidden-initially">
     <div id="special-container"></div>
+    <nav id="category-nav" style="display:flex; gap:10px; overflow-x:auto; margin-bottom:20px; padding-bottom:10px;"></nav>
     <div id="menu-container" class="skeleton-container">
       <div class="skeleton-item"></div>
       <div class="skeleton-item"></div>
@@ -120,6 +114,18 @@
           <input type="text" id="delivery-address" placeholder="Adresse" style="display:none;">
         </div>
         <button id="confirm-order-btn" class="btn-primary">Confirmer la commande</button>
+      </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div id="receipt-modal" class="modal hidden">
+      <div class="modal-content" style="text-align:center;">
+        <h2 style="color:var(--primary); font-size:2rem;">✓ Reçu</h2>
+        <p style="font-size:1.2rem;">Commande <strong id="receipt-id"></strong></p>
+        <p id="receipt-mode" style="margin-bottom:20px; color:#555;"></p>
+        <div id="receipt-items" style="text-align:left; margin-bottom:20px; border-top:1px solid #eee; border-bottom:1px solid #eee; padding:10px 0; max-height:200px; overflow-y:auto;"></div>
+        <p style="font-size:1.5rem; margin-bottom:20px;">Total: <strong id="receipt-total"></strong></p>
+        <button id="close-receipt-btn" class="btn-primary">Suivre ma commande</button>
       </div>
     </div>
 
