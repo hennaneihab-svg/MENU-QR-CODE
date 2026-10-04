@@ -483,3 +483,16 @@ body[dir="rtl"] .lang-segmented-control {
 .success-check-circle { stroke: var(--primary); stroke-width: 2; }
 .success-check-path { stroke: var(--primary); stroke-width: 3; }
 
+#demo-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  z-index: 99999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+}
+
